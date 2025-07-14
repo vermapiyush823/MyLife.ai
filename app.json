@@ -1,29 +1,43 @@
 {
   "expo": {
-    "name": "mylife-ai-app",
+    "name": "MyLife AI",
     "slug": "mylife-ai-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
+    "scheme": "mylife-ai-app",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#0F172A"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mylife.ai"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#0F172A"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.mylife.ai"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+           "apiKey": "AIzaSyDNnjhYiIbK2khb329R9TtrQbHrmpNsJTk",
+  "authDomain": "mylife-ai.firebaseapp.com",
+  "projectId": "mylife-ai",
+  "storageBucket": "mylife-ai.firebasestorage.app",
+  "messagingSenderId": "937507742250",
+  "appId": "1:937507742250:web:be43dcbb8d736f62cc9953",
+  "measurementId": "G-RC4Z6K3JM0"
+        }
+    }
     }
   }
 }
