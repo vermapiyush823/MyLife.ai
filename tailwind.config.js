@@ -21,6 +21,9 @@ module.exports = {
         success: '#22C55E',
         info: '#38BDF8',
       },
+      flex: {
+        '2': '2 2 0%',
+      },
     },
   },
   plugins: [],

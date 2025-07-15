@@ -40,7 +40,7 @@ export default function DashboardScreen({ navigation }) {
       description: 'Smart calculations', 
       icon: '🔢', 
       color: 'bg-blue-600',
-      onPress: () => console.log(user.displayName)
+      onPress: () => navigation.navigate('Calculator')
     },
     { 
       name: 'Mood Tracker', 
@@ -54,7 +54,7 @@ export default function DashboardScreen({ navigation }) {
       description: 'Capture thoughts', 
       icon: '📝', 
       color: 'bg-green-600',
-      onPress: () => console.log('Notes pressed')
+      onPress: () => navigation.navigate('Notes')
     },
     { 
       name: 'Vault', 
