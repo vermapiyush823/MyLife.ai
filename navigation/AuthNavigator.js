@@ -3,8 +3,8 @@ import { View, ActivityIndicator, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthProvider, useAuth } from '../contexts/AuthContext';
-import LoginScreen from '../screens/EnhancedLoginScreen';
-import SignupScreen from '../screens/EnhancedSignupScreen';
+import EnhancedLoginScreen from '../screens/EnhancedLoginScreen';
+import EnhancedSignupScreen from '../screens/EnhancedSignupScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import NotesScreen from '../screens/EnhancedNotesScreen';
 import CalculatorScreen from '../screens/CalculatorScreen';
@@ -25,8 +25,8 @@ function AuthStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Signup" component={SignupScreen} />
+      <Stack.Screen name="Login" component={EnhancedLoginScreen} />
+      <Stack.Screen name="Signup" component={EnhancedSignupScreen} />
     </Stack.Navigator>
   );
 }

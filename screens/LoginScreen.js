@@ -7,7 +7,6 @@ import {
   Alert,
   ScrollView,
   ActivityIndicator,
-  SafeAreaView,
   KeyboardAvoidingView,
   Platform,
   Dimensions,
@@ -21,6 +20,7 @@ import {
   signInWithCredential,
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Path, Defs, LinearGradient, Stop, G } from 'react-native-svg';
 import { Colors } from '../constants/Config';
 
@@ -35,6 +35,7 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const insets = useSafeAreaInsets();
 
   // Google OAuth Configuration
   const discovery = AuthSession.useAutoDiscovery('https://accounts.google.com');
@@ -150,7 +151,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
       <StatusBar style="light" />
       <KeyboardAvoidingView 
         className="flex-1" 
@@ -158,7 +159,7 @@ export default function LoginScreen({ navigation }) {
       >
         <ScrollView 
           className="flex-1"
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: insets.bottom }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
@@ -389,6 +390,6 @@ export default function LoginScreen({ navigation }) {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

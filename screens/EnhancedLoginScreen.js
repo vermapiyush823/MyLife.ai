@@ -4,15 +4,15 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
-  ScrollView,
-  ActivityIndicator,
-  SafeAreaView,
   KeyboardAvoidingView,
+  ScrollView,
   Platform,
+  Alert,
+  ActivityIndicator,
   Dimensions,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { 
@@ -93,6 +93,8 @@ export default function EnhancedLoginScreen({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const [error, setError] = useState('');
+  const insets = useSafeAreaInsets();
 
   // Google OAuth Configuration
   const discovery = AuthSession.useAutoDiscovery('https://accounts.google.com');
@@ -127,18 +129,20 @@ export default function EnhancedLoginScreen({ navigation }) {
 
   // Handle email/password authentication
   const handleEmailAuth = async () => {
+    setError(''); // Clear previous errors
+    
     if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please enter both email and password');
+      setError('Please enter both email and password');
       return;
     }
 
-    if (!validateEmail(email.trim())) {
-      Alert.alert('Error', 'Please enter a valid email address');
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address');
       return;
     }
 
     if (!validatePassword(password)) {
-      Alert.alert('Error', 'Password must be at least 6 characters long');
+      setError('Password must be at least 6 characters long');
       return;
     }
 
@@ -171,7 +175,7 @@ export default function EnhancedLoginScreen({ navigation }) {
           errorMessage = error.message || errorMessage;
       }
       
-      Alert.alert('Error', errorMessage);
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -204,7 +208,7 @@ export default function EnhancedLoginScreen({ navigation }) {
   const maxWidth = isTablet ? 'max-w-md mx-auto' : '';
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
       <StatusBar style="light" />
       <KeyboardAvoidingView 
         className="flex-1" 
@@ -213,7 +217,7 @@ export default function EnhancedLoginScreen({ navigation }) {
         <ScrollView 
           className="flex-1"
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: insets.bottom }}
         >
           <View className={`flex-1 justify-center ${containerPadding} py-8`}>
             <View className={maxWidth}>
@@ -389,6 +393,13 @@ export default function EnhancedLoginScreen({ navigation }) {
                   )}
                 </TouchableOpacity>
 
+                {/* Error Banner */}
+                {error ? (
+                  <View className="bg-errorBg border-l-4 border-danger px-4 py-3 mx-4 mt-2 rounded">
+                    <Text className="text-danger text-sm">{error}</Text>
+                  </View>
+                ) : null}
+
                 {/* Sign Up Link */}
                 <View className="flex-row justify-center items-center mt-6">
                   <Text className="text-textSecondary text-sm">
@@ -414,6 +425,6 @@ export default function EnhancedLoginScreen({ navigation }) {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

@@ -2,19 +2,17 @@ import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
+  TextInput,
   TouchableOpacity,
   FlatList,
-  TextInput,
-  Modal,
   Alert,
-  ActivityIndicator,
+  Modal,
+  ScrollView,
   KeyboardAvoidingView,
   Platform,
-  SafeAreaView,
-  StatusBar,
-  Dimensions,
-  ScrollView,
 } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { 
   collection, 
   addDoc, 
@@ -48,6 +46,7 @@ const EnhancedNotesScreen = ({ navigation }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [showAIOptions, setShowAIOptions] = useState(false);
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     if (!user) return;
@@ -276,7 +275,7 @@ const EnhancedNotesScreen = ({ navigation }) => {
         </Text>
       )}
       
-      <View className="flex-row justify-between items-center mt-3 pt-3 border-t border-gray-700">
+      <View className="flex-row items-center justify-between px-6 py-4 bg-surface border-b border-vercel-border">
         <Text className="text-textSecondary text-xs">
           {item.content ? `${item.content.length} characters` : 'No content'}
         </Text>
@@ -321,8 +320,8 @@ const EnhancedNotesScreen = ({ navigation }) => {
   const numColumns = isTablet ? 2 : 1;
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
-      <StatusBar barStyle="light-content" backgroundColor="#0B1119" />
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
+      <StatusBar style="light" />
       
       {/* Header */}
       <View className={`px-6 pt-4 pb-4 bg-background ${isTablet ? 'px-8' : ''}`}>
@@ -407,7 +406,7 @@ const EnhancedNotesScreen = ({ navigation }) => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           className="flex-1 bg-background"
         >
-          <SafeAreaView className="flex-1">
+          <View className="flex-1" style={{ paddingTop: insets.top }}>
             {/* Modal Header */}
             <View className="px-6 py-4 border-b border-gray-700">
               <View className="flex-row justify-between items-center">
@@ -517,10 +516,10 @@ const EnhancedNotesScreen = ({ navigation }) => {
                 )}
               </View>
             </ScrollView>
-          </SafeAreaView>
+          </View>
         </KeyboardAvoidingView>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 };
 

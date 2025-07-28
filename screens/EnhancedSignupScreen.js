@@ -4,15 +4,15 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
-  ScrollView,
-  ActivityIndicator,
-  SafeAreaView,
   KeyboardAvoidingView,
+  ScrollView,
   Platform,
+  Alert,
+  ActivityIndicator,
   Dimensions,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { 
@@ -22,8 +22,10 @@ import {
   updateProfile,
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+import { useAuth } from '../contexts/AuthContext';
 import Svg, { Circle, Path, Defs, LinearGradient, Stop, G, Rect } from 'react-native-svg';
 import { Colors } from '../constants/Config';
+import { EyeIcon, EyeOffIcon } from '../components/Icons';
 
 // Complete the auth session for Expo
 WebBrowser.maybeCompleteAuthSession();
@@ -95,6 +97,7 @@ export default function EnhancedSignupScreen({ navigation }) {
   const [focusedField, setFocusedField] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const insets = useSafeAreaInsets();
 
   // Google OAuth Configuration
   const discovery = AuthSession.useAutoDiscovery('https://accounts.google.com');
@@ -226,7 +229,7 @@ export default function EnhancedSignupScreen({ navigation }) {
   const maxWidth = isTablet ? 'max-w-md mx-auto' : '';
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
       <StatusBar style="light" />
       <KeyboardAvoidingView 
         className="flex-1" 
@@ -235,7 +238,7 @@ export default function EnhancedSignupScreen({ navigation }) {
         <ScrollView 
           className="flex-1"
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: insets.bottom }}
         >
           <View className={`flex-1 justify-center ${containerPadding} py-8`}>
             <View className={maxWidth}>
@@ -295,7 +298,7 @@ export default function EnhancedSignupScreen({ navigation }) {
                     <TextInput
                       className="bg-surface rounded-xl px-4 py-4 text-textPrimary text-base pr-12"
                       style={{
-                        borderWidth: 2,
+                        borderWidth: 1,
                         borderColor: getInputBorderColor('email', formData.email, validateEmail(formData.email))
                       }}
                       placeholder="Enter your email"
@@ -345,9 +348,7 @@ export default function EnhancedSignupScreen({ navigation }) {
                       className="absolute right-4 top-1/2 -translate-y-2"
                       onPress={() => setShowPassword(!showPassword)}
                     >
-                      <Text className="text-lg text-textSecondary">
-                        {showPassword ? '🙈' : '👁️'}
-                      </Text>
+                      {showPassword ? <EyeOffIcon size={20} color="#888888" /> : <EyeIcon size={20} color="#888888" />}
                     </TouchableOpacity>
                   </View>
                   {formData.password.length > 0 && formData.password.length < 6 && (
@@ -384,9 +385,7 @@ export default function EnhancedSignupScreen({ navigation }) {
                       className="absolute right-4 top-1/2 -translate-y-2"
                       onPress={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
-                      <Text className="text-lg text-textSecondary">
-                        {showConfirmPassword ? '🙈' : '👁️'}
-                      </Text>
+                      {showConfirmPassword ? <EyeOffIcon size={20} color="#888888" /> : <EyeIcon size={20} color="#888888" />}
                     </TouchableOpacity>
                   </View>
                   {formData.confirmPassword.length > 0 && 
@@ -435,7 +434,7 @@ export default function EnhancedSignupScreen({ navigation }) {
 
                 {/* Google Sign Up */}
                 <TouchableOpacity
-                  className="bg-surface border-2 border-gray-600 rounded-xl py-4 px-6 flex-row items-center justify-center"
+                  className="bg-surface border border-border rounded-xl py-4 px-6 flex-row items-center justify-center"
                   onPress={handleGoogleSignup}
                   disabled={loading || !request}
                   style={{
@@ -500,6 +499,6 @@ export default function EnhancedSignupScreen({ navigation }) {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

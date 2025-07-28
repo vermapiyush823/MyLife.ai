@@ -4,17 +4,29 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  Alert,
-  ActivityIndicator,
+  FlatList,
   KeyboardAvoidingView,
   Platform,
+  Alert,
+  ActivityIndicator,
   Dimensions,
 } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../contexts/AuthContext';
 import { askGemini } from '../lib/geminiAI';
+import {
+  LightbulbIcon,
+  DocumentIcon,
+  BrainIcon,
+  SparkleIcon,
+  ChartIcon,
+  TargetIcon,
+  BackIcon,
+  DeleteIcon,
+  RobotIcon,
+} from '../components/Icons';
 
 const { width } = Dimensions.get('window');
 const isTablet = width > 768;
@@ -27,15 +39,16 @@ export default function EnhancedAIChatScreen({ navigation }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const scrollViewRef = useRef();
+  const insets = useSafeAreaInsets();
 
-  // Quick suggestion prompts
+  // Quick suggestion prompts with SVG icons
   const quickSuggestions = [
-    "💡 Give me productivity tips",
-    "📝 Help me organize my day",
-    "🧠 Explain a complex topic",
-    "✨ Creative writing ideas",
-    "📊 Analyze my goals",
-    "🎯 Problem-solving help"
+    { text: "Give me productivity tips", icon: <LightbulbIcon size={16} color="#0070F3" /> },
+    { text: "Help me organize my day", icon: <DocumentIcon size={16} color="#F5A623" /> },
+    { text: "Explain a complex topic", icon: <BrainIcon size={16} color="#7C3AED" /> },
+    { text: "Creative writing ideas", icon: <SparkleIcon size={16} color="#00D9FF" /> },
+    { text: "Analyze my goals", icon: <ChartIcon size={16} color="#FF0080" /> },
+    { text: "Problem-solving help", icon: <TargetIcon size={16} color="#00D9FF" /> }
   ];
 
   useEffect(() => {
@@ -166,8 +179,8 @@ export default function EnhancedAIChatScreen({ navigation }) {
   };
 
   const handleSuggestionPress = (suggestion) => {
-    const cleanSuggestion = suggestion.replace(/^[\p{Emoji}\s]+/u, '').trim();
-    sendMessage(cleanSuggestion);
+    const textToSend = typeof suggestion === 'string' ? suggestion : suggestion.text;
+    sendMessage(textToSend);
   };
 
   if (loading) {
@@ -186,13 +199,13 @@ export default function EnhancedAIChatScreen({ navigation }) {
   return (
     <SafeAreaView className="flex-1 bg-background">
       {/* Enhanced Header */}
-      <View className={`flex-row items-center justify-between ${containerPadding} py-4 bg-surface border-b border-gray-700`}>
+      <View className={`flex-row items-center justify-between ${containerPadding} py-4 bg-surface border-b border-border`}>
         <View className="flex-row items-center flex-1">
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             className="mr-4 p-2 rounded-full bg-gray-700 active:bg-gray-600"
           >
-            <Text className="text-textPrimary text-lg">←</Text>
+            <BackIcon size={20} color="#FFFFFF" />
           </TouchableOpacity>
           <View className="flex-1">
             <Text className="text-xl font-bold text-textPrimary">AI Assistant</Text>
@@ -207,14 +220,14 @@ export default function EnhancedAIChatScreen({ navigation }) {
           onPress={clearChat}
           className="p-2 rounded-full bg-gray-700 active:bg-gray-600"
         >
-          <Text className="text-textPrimary text-base">🗑️</Text>
+          <DeleteIcon size={20} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
 
       {/* Error Banner */}
       {error && (
-        <View className="bg-red-900/20 border-l-4 border-red-500 px-4 py-3 mx-4 mt-2 rounded">
-          <Text className="text-red-400 text-sm">{error}</Text>
+        <View className="bg-errorBg border-l-4 border-danger px-4 py-3 mx-4 mt-2 rounded">
+          <Text className="text-danger text-sm">{error}</Text>
         </View>
       )}
 
@@ -231,7 +244,9 @@ export default function EnhancedAIChatScreen({ navigation }) {
         >
           {messages.length === 0 && (
             <View className="flex-1 justify-center items-center py-12">
-              <Text className="text-6xl mb-4">🤖</Text>
+              <View className="mb-4">
+                <RobotIcon size={64} color="#0070F3" />
+              </View>
               <Text className="text-textPrimary text-lg font-semibold mb-2">Welcome to AI Chat</Text>
               <Text className="text-textSecondary text-center leading-6">
                 Start a conversation with your AI assistant
@@ -311,9 +326,12 @@ export default function EnhancedAIChatScreen({ navigation }) {
                   <TouchableOpacity
                     key={index}
                     onPress={() => handleSuggestionPress(suggestion)}
-                    className="bg-surface border border-gray-600 rounded-full px-4 py-2 mr-2 mb-2 active:bg-gray-700"
+                    className="bg-surface border border-border rounded-full px-4 py-2 mr-2 mb-2 active:bg-hover flex-row items-center"
                   >
-                    <Text className="text-textPrimary text-sm">{suggestion}</Text>
+                    <View className="mr-2">
+                      {suggestion.icon}
+                    </View>
+                    <Text className="text-textPrimary text-sm">{suggestion.text}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
@@ -322,11 +340,11 @@ export default function EnhancedAIChatScreen({ navigation }) {
         </ScrollView>
 
         {/* Enhanced Input Area */}
-        <View className={`${containerPadding} py-4 bg-surface border-t border-gray-700`}>
+        <View className={`${containerPadding} py-4 bg-surface border-t border-border`}>
           <View className="flex-row items-end space-x-3">
             <View className="flex-1">
               <TextInput
-                className="bg-background border border-gray-600 rounded-2xl px-4 py-3 text-textPrimary text-base max-h-24"
+                className="bg-surface border border-border rounded-2xl px-4 py-3 text-textPrimary text-base max-h-24"
                 placeholder="Ask me anything..."
                 placeholderTextColor="#6B7280"
                 value={inputText}
