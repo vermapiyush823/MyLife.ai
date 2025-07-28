@@ -3,10 +3,10 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   StatusBar,
   ScrollView,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { evaluate } from 'mathjs';
 import { 
   collection, 
@@ -44,6 +44,7 @@ const CalculatorScreen = ({ navigation }) => {
   const [showHistory, setShowHistory] = useState(false);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
+  const insets = useSafeAreaInsets();
 
   // Load calculations from Firestore
   useEffect(() => {
@@ -697,7 +698,7 @@ const CalculatorScreen = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
       <StatusBar barStyle="light-content" backgroundColor="#0B1119" />
       
       {/* Header */}
@@ -768,7 +769,7 @@ const CalculatorScreen = ({ navigation }) => {
           </View>
         </>
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 

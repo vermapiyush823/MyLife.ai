@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
   Alert,
   TextInput,
@@ -11,6 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -18,6 +18,7 @@ const { width } = Dimensions.get('window');
 
 export default function CalendarScreen({ navigation }) {
   const { user } = useAuth();
+  const insets = useSafeAreaInsets();
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -211,11 +212,11 @@ export default function CalendarScreen({ navigation }) {
   const selectedDateEvents = getEventsForSelectedDate();
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
       <StatusBar style="light" />
       
       {/* Header */}
-      <View className="px-6 py-6 border-b mt-10 border-gray-700">
+      <View className="px-6 py-6 border-b border-gray-700">
         <View className="flex-row justify-between items-center">
           <View>
             <Text className="text-3xl font-bold text-textPrimary mb-1">
@@ -231,18 +232,10 @@ export default function CalendarScreen({ navigation }) {
                 resetForm();
                 setIsModalVisible(true);
               }}
-              className="bg-primary px-4 py-2 rounded-lg"
+              className="px-4 py-2 rounded-lg"
             >
-              <Text className="text-textPrimary text-sm font-medium">
-                Add Event
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              className="bg-surface px-4 py-2 rounded-lg border border-gray-600"
-            >
-              <Text className="text-textPrimary text-sm font-medium">
-                Back
+              <Text className="text-primary text-sm font-medium">
+                Add Event 
               </Text>
             </TouchableOpacity>
           </View>
@@ -468,7 +461,7 @@ export default function CalendarScreen({ navigation }) {
 
         {/* Quick Stats */}
         <View className="px-6 py-4">
-          <View className="flex-row space-x-4">
+          <View className="flex flex-row gap-2 space-x-4">
             <View className="flex-1 bg-surface rounded-xl p-4 border border-gray-600">
               <Text className="text-textSecondary text-sm mb-1">Total Events</Text>
               <Text className="text-textPrimary text-2xl font-bold">{events.length}</Text>
@@ -501,7 +494,7 @@ export default function CalendarScreen({ navigation }) {
         animationType="slide"
         presentationStyle="pageSheet"
       >
-        <SafeAreaView className="flex-1 bg-background">
+        <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
           <View className="px-6 py-4 border-b border-gray-700">
             <View className="flex-row justify-between items-center">
               <Text className="text-xl font-bold text-textPrimary">
@@ -510,9 +503,9 @@ export default function CalendarScreen({ navigation }) {
               <View className="flex-row space-x-2">
                 <TouchableOpacity
                   onPress={addEvent}
-                  className="bg-primary px-4 py-2 rounded-lg"
+                  className="px-4 py-2 rounded-lg"
                 >
-                  <Text className="text-textPrimary font-medium">Save</Text>
+                  <Text className="text-primary font-medium">Save</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
@@ -573,7 +566,7 @@ export default function CalendarScreen({ navigation }) {
 
             {/* Event Type */}
             <Text className="text-textPrimary font-medium mb-2">Event Type</Text>
-            <View className="flex-row flex-wrap mb-4">
+            <View className="flex-row flex-wrap  mb-4">
               {eventTypes.map(type => (
                 <TouchableOpacity
                   key={type}
@@ -611,8 +604,8 @@ export default function CalendarScreen({ navigation }) {
               </TouchableOpacity>
             </View>
           </ScrollView>
-        </SafeAreaView>
+        </View>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }

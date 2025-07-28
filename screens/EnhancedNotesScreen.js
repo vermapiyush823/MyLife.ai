@@ -10,6 +10,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -29,6 +31,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { db } from '../lib/firebase';
 import { askGemini, getSummary, analyzeText } from '../lib/geminiAI';
 import { Colors } from '../constants/Config';
+import { SearchIcon } from '../components/Icons';
 
 const { width, height } = Dimensions.get('window');
 const isTablet = width > 768;
@@ -153,6 +156,7 @@ const EnhancedNotesScreen = ({ navigation }) => {
       return;
     }
 
+    console.log('🤖 Starting AI action:', action, 'with content:', noteContent.substring(0, 50) + '...');
     setAiLoading(true);
     setShowAIOptions(false);
 
@@ -160,19 +164,29 @@ const EnhancedNotesScreen = ({ navigation }) => {
       let result;
       switch (action) {
         case 'summarize':
+          console.log('📝 Calling getSummary...');
           result = await getSummary(noteContent);
           break;
         case 'improve':
+          console.log('✨ Calling askGemini for improvement...');
           result = await askGemini(`Please improve and enhance the following text while maintaining its original meaning:\n\n${noteContent}`);
           break;
         case 'analyze':
+          console.log('🔍 Calling analyzeText...');
           result = await analyzeText(noteContent);
           break;
         case 'expand':
+          console.log('📝 Calling askGemini for expansion...');
           result = await askGemini(`Please expand on the following text with more details and insights:\n\n${noteContent}`);
           break;
         default:
           return;
+      }
+
+      console.log('✅ AI result received:', typeof result, result?.length, result?.substring(0, 100) + '...');
+
+      if (!result || result.trim() === '') {
+        throw new Error('AI returned an empty response');
       }
 
       Alert.alert(
@@ -187,7 +201,7 @@ const EnhancedNotesScreen = ({ navigation }) => {
         ]
       );
     } catch (error) {
-      console.error('AI Error:', error);
+      console.error('🚨 AI Error in handleAIAction:', error);
       Alert.alert('AI Error', error.message || 'Failed to process with AI. Please try again.');
     } finally {
       setAiLoading(false);
@@ -307,12 +321,13 @@ const EnhancedNotesScreen = ({ navigation }) => {
 
   if (loading) {
     return (
-      <SafeAreaView className="flex-1 bg-background">
+      <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
+        <StatusBar style="light" />
         <View className="flex-1 justify-center items-center">
           <ActivityIndicator size="large" color={Colors.primary} />
           <Text className="text-textSecondary mt-4">Loading notes...</Text>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
@@ -339,13 +354,10 @@ const EnhancedNotesScreen = ({ navigation }) => {
               onPress={() => setShowSearch(!showSearch)}
               className={`p-3 rounded-xl ${showSearch ? 'bg-primary' : 'bg-surface border border-gray-600'}`}
             >
-              <Text className="text-lg">🔍</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              className="bg-surface border border-gray-600 p-3 rounded-xl"
-            >
-              <Text className="text-textPrimary text-sm">Back</Text>
+              <SearchIcon 
+                size={20} 
+                color={showSearch ? '#FFFFFF' : '#9CA3AF'} 
+              />
             </TouchableOpacity>
           </View>
         </View>

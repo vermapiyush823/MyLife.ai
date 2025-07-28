@@ -3,12 +3,12 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
   Alert,
   Dimensions,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -16,6 +16,7 @@ const { width } = Dimensions.get('window');
 
 export default function MoodTrackerScreen({ navigation }) {
   const { user } = useAuth();
+  const insets = useSafeAreaInsets();
   const [selectedMood, setSelectedMood] = useState(null);
   const [moodHistory, setMoodHistory] = useState([]);
   const [currentStreak, setCurrentStreak] = useState(0);
@@ -136,7 +137,7 @@ export default function MoodTrackerScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
       <StatusBar style="light" />
       <ScrollView 
         className="flex-1"
@@ -144,7 +145,7 @@ export default function MoodTrackerScreen({ navigation }) {
         contentContainerStyle={{ paddingBottom: 20 }}
       >
         {/* Header */}
-        <View className="px-6 py-6 border-b mt-10 border-gray-700">
+        <View className="px-6 py-6 border-b border-gray-700">
           <View className="flex-row justify-between items-center">
             <View>
               <Text className="text-3xl font-bold text-textPrimary mb-1">
@@ -283,6 +284,6 @@ export default function MoodTrackerScreen({ navigation }) {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

@@ -196,3 +196,11 @@ export const RobotIcon = ({ size = 48, color = '#FFFFFF' }) => (
     <Path d="M9 18h6" stroke={color} strokeWidth="2"/>
   </Svg>
 );
+
+// Search Icon
+export const SearchIcon = ({ size = 20, color = '#FFFFFF' }) => (
+  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+    <Circle cx="11" cy="11" r="8" stroke={color} strokeWidth="2" fill="none"/>
+    <Path d="m21 21-4.35-4.35" stroke={color} strokeWidth="2" fill="none"/>
+  </Svg>
+);

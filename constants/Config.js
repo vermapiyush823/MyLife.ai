@@ -2,7 +2,7 @@ import Constants from 'expo-constants';
 
 export const Config = {
   GEMINI_API_KEY: 'AIzaSyByGrucrVhJ9S8N-Owo0hf-3w5m5Y6TMEI',
-  GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
+  GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent',
 };
 export const Colors = {
   // Vercel-inspired color palette

@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
+  ScrollView,
   KeyboardAvoidingView,
   Platform,
   Alert,
@@ -185,19 +186,21 @@ export default function EnhancedAIChatScreen({ navigation }) {
 
   if (loading) {
     return (
-      <SafeAreaView className="flex-1 bg-background">
+      <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
+        <StatusBar style="light" />
         <View className="flex-1 justify-center items-center">
           <ActivityIndicator size="large" color="#3B82F6" />
           <Text className="text-textSecondary mt-4 text-base">Loading AI Chat...</Text>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
   const containerPadding = isTablet ? 'px-8' : 'px-4';
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
+      <StatusBar style="light" />
       {/* Enhanced Header */}
       <View className={`flex-row items-center justify-between ${containerPadding} py-4 bg-surface border-b border-border`}>
         <View className="flex-row items-center flex-1">
@@ -384,6 +387,6 @@ export default function EnhancedAIChatScreen({ navigation }) {
           </View>
         </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }

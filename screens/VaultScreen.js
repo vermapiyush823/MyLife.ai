@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  SafeAreaView,
   ScrollView,
   Alert,
   TextInput,
@@ -12,6 +11,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '../contexts/AuthContext';
 import { BiometricAuth } from '../lib/biometricAuth';
@@ -22,6 +22,7 @@ const isTablet = width > 768;
 
 export default function VaultScreen({ navigation }) {
   const { user } = useAuth();
+  const insets = useSafeAreaInsets();
   const [vaultItems, setVaultItems] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
@@ -162,11 +163,11 @@ export default function VaultScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
       <StatusBar style="light" />
       
       {/* Header */}
-      <View className="px-6 py-6 border-b mt-10 border-gray-700">
+      <View className="px-6 py-6 border-b border-gray-700">
         <View className="flex-row justify-between items-center">
           <View>
             <Text className="text-3xl font-bold text-textPrimary mb-1">
@@ -330,7 +331,7 @@ export default function VaultScreen({ navigation }) {
         animationType="slide"
         presentationStyle="pageSheet"
       >
-        <SafeAreaView className="flex-1 bg-background">
+        <View className="flex-1 bg-background" style={{ paddingTop: insets.top }}>
           <View className="px-6 py-4 border-b border-gray-700">
             <View className="flex-row justify-between items-center">
               <Text className="text-xl font-bold text-textPrimary">
@@ -439,8 +440,8 @@ export default function VaultScreen({ navigation }) {
               textAlignVertical="top"
             />
           </ScrollView>
-        </SafeAreaView>
+        </View>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }

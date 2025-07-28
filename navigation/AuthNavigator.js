@@ -15,6 +15,7 @@ import SplitwiseScreen from '../screens/SplitwiseScreen';
 import AIChatScreen from '../screens/EnhancedAIChatScreen';
 import TasksScreen from '../screens/TasksScreen';
 import CalendarScreen from '../screens/CalendarScreen';
+import EnhancedNotesScreen from '../screens/EnhancedNotesScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -40,7 +41,7 @@ function AppStack() {
       initialRouteName="Dashboard"
     >
       <Stack.Screen name="Dashboard" component={DashboardScreen} />
-      <Stack.Screen name="Notes" component={NotesScreen} />
+      <Stack.Screen name="Notes" component={EnhancedNotesScreen} />
       <Stack.Screen name="Calculator" component={CalculatorScreen} />
       <Stack.Screen name="MoodTracker" component={MoodTrackerScreen} />
       <Stack.Screen name="Vault" component={VaultScreen} />
