@@ -47,7 +47,7 @@ export default function DashboardScreen({ navigation }) {
       description: 'Track emotions', 
       icon: '😊', 
       color: 'bg-pink-600',
-      onPress: () => console.log('Mood Tracker pressed')
+      onPress: () => navigation.navigate('MoodTracker')
     },
     { 
       name: 'Notes', 
@@ -61,35 +61,35 @@ export default function DashboardScreen({ navigation }) {
       description: 'Secure storage', 
       icon: '🔒', 
       color: 'bg-purple-600',
-      onPress: () => console.log('Vault pressed')
+      onPress: () => navigation.navigate('Vault')
     },
     { 
       name: 'Splitwise', 
       description: 'Split expenses', 
       icon: '💰', 
       color: 'bg-yellow-600',
-      onPress: () => console.log('Splitwise pressed')
+      onPress: () => navigation.navigate('Splitwise')
     },
     { 
       name: 'AI Chat', 
       description: 'Smart assistant', 
       icon: '🤖', 
       color: 'bg-indigo-600',
-      onPress: () => console.log('AI Chat pressed')
+      onPress: () => navigation.navigate('AIChat')
     },
     { 
       name: 'Tasks', 
       description: 'Stay organized', 
       icon: '✅', 
       color: 'bg-emerald-600',
-      onPress: () => console.log('Tasks pressed')
+      onPress: () => navigation.navigate('Tasks')
     },
     { 
       name: 'Calendar', 
       description: 'Plan your day', 
       icon: '📅', 
       color: 'bg-red-600',
-      onPress: () => console.log('Calendar pressed')
+      onPress: () => navigation.navigate('Calendar')
     },
   ];
 

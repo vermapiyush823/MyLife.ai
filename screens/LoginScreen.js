@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
-  Image,
+  Dimensions,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as AuthSession from 'expo-auth-session';
@@ -21,15 +21,20 @@ import {
   signInWithCredential,
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
-import Svg, { Circle, Line, Defs, LinearGradient, Stop, RadialGradient, Ellipse, Path, Rect, Polygon, Text as SvgText, Filter, FeGaussianBlur, FeMerge, FeMergeNode } from 'react-native-svg';
+import Svg, { Circle, Path, Defs, LinearGradient, Stop, G } from 'react-native-svg';
+import { Colors } from '../constants/Config';
 
 // Complete the auth session for Expo
 WebBrowser.maybeCompleteAuthSession();
+
+const { width, height } = Dimensions.get('window');
+const isTablet = width > 768;
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Google OAuth Configuration
   const discovery = AuthSession.useAutoDiscovery('https://accounts.google.com');
